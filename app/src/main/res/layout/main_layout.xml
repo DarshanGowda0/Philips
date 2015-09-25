@@ -44,7 +44,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <com.malinskiy.superrecyclerview.SuperRecyclerView
+    <android.support.v7.widget.RecyclerView
 
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
 
         >
 
-    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
 
 

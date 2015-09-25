@@ -36,6 +36,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     String access_token;
     int status;
     JSONObject details;
+    String username,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,11 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (pwd.getText().toString().equals("")||userName.getText().toString().equals("")){
             incorrect.setText("Enter both username and password");
+
         }
         else {
+            username = userName.getText().toString();
+            password = pwd.getText().toString();
             new verify().execute();
         }
     }
@@ -111,8 +115,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
                 JSONObject person = new JSONObject();
                 try {
-                    person.put("password",pwd.getText().toString());
-                    person.put("username",userName.getText().toString());
+                    person.put("password",password);
+                    person.put("username",username);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

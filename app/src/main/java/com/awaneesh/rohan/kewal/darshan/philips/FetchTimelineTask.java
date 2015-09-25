@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,14 +21,14 @@ import java.net.URL;
 /**
  * Created by darshan on 26/09/15.
  */
-public class FetchTimelineTask extends AsyncTask<Void,Void,Void> {
+public class FetchTimelineTask extends AsyncTask<Void, Void, Void> {
 
     BufferedReader mBufferedInputStream;
     String Response = "";
     int page_no;
     String type;
 
-    public FetchTimelineTask(String type,int page_no){
+    public FetchTimelineTask(String type, int page_no) {
         this.type = type;
         this.page_no = page_no;
     }
@@ -42,7 +46,7 @@ public class FetchTimelineTask extends AsyncTask<Void,Void,Void> {
             httpURLConnection.setDoOutput(true);
 
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("type",type)
+                    .appendQueryParameter("type", type)
                     .appendQueryParameter("page_no", "" + page_no);
 //            Log.d("pageno", "" + page_no);
 
@@ -69,7 +73,8 @@ public class FetchTimelineTask extends AsyncTask<Void,Void,Void> {
                 mBufferedInputStream.close();
 
 //                parseJson(Response);
-                Log.d("KEWAL",Response);
+                Log.d("KEWAL", Response);
+                parseJSON(Response);
 
             } else {
                 Log.d("darshan", "something wrong");
@@ -85,4 +90,36 @@ public class FetchTimelineTask extends AsyncTask<Void,Void,Void> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        MainActivity.mTimelineAdapter.notifyDataSetChanged();
+    }
+
+    private void parseJSON(String response) {
+        JSONObject jsonObject;
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                jsonObject = jsonArray.getJSONObject(i);
+
+                TimelineData mTimelineData = new TimelineData();
+
+                mTimelineData.NAME = jsonObject.getString("user_name");
+                mTimelineData.IMG = jsonObject.getString("user_img");
+                mTimelineData.QUE_ID = jsonObject.getString("que_id");
+                mTimelineData.QUESTION = jsonObject.getString("question");
+
+                MainActivity.list.add(mTimelineData);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
