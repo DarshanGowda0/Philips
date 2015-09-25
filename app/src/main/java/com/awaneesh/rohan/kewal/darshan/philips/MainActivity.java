@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //post Question
+                Intent in = new Intent(MainActivity.this,PostQuestion.class);
+                startActivity(in);
             }
         });
     }
