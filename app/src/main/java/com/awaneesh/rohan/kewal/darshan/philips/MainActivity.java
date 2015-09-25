@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        new FetchTimelineTask("DIABETES",0).execute();
     }
 
     private void setupToolbar() {

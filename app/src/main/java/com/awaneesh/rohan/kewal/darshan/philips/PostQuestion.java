@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,7 +40,8 @@ public class PostQuestion extends AppCompatActivity{
     private static final int RESULT_LOAD_IMAGE = 1234;
     private static final int REQUEST_IMAGE_CAPTURE = 0000;
     private static final int SPEECH_REQUEST_CODE = 2222;
-
+    TextView POST;
+    String QUESTION,USER_ID="123456",TYPE="DIABETES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,14 @@ public class PostQuestion extends AppCompatActivity{
 
         richEditText = (EditText) findViewById(R.id.questionTv);
         fab = (FloatingActionButton) findViewById(R.id.fab2);
+        POST = (TextView) findViewById(R.id.postTv);
+        POST.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QUESTION = richEditText.getText().toString();
+                new PostQuestionTask(USER_ID,QUESTION,TYPE).execute();
+            }
+        });
     }
 
 
