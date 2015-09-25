@@ -10,11 +10,12 @@
     android:gravity="bottom">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_margin="8dp"
         app:border_width="2dp"
         app:border_color="#e67e22"
+        android:src="@drawable/user"
         android:id="@+id/circleView" />
 
     <TextView
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Username"
+        android:textSize="20sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

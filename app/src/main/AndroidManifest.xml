@@ -17,6 +17,10 @@
             android:label="@string/app_name">
 
             </activity>
+        <activity android:name=".PostQuestion"
+            android:label="@string/app_name">
+
+        </activity>
         <activity
             android:name=".Splash"
             android:label="@string/app_name">
