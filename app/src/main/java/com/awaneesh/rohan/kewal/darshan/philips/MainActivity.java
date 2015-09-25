@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
+    int str[]={R.drawable.md1,R.drawable.md2,R.drawable.md3};
 
 
     @Override
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new FetchTimelineTask("DIABETES",0).execute();
+        int t= (int) ((System.currentTimeMillis()/1000)%3);
+        LinearLayout v= (LinearLayout) findViewById(R.id.nav);
+        v.setBackgroundResource(str[t]);
 
         setUpRecyclerView();
 
