@@ -2,12 +2,14 @@ package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -20,6 +22,7 @@ public class AnswersTimeline extends AppCompatActivity {
     TextView tvName, tvQuestion;
     SharedPreferences sharedPreferences;
     public static TimelineAdapter mTimelineAdapter;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +42,22 @@ public class AnswersTimeline extends AppCompatActivity {
         tvName.setText(MainActivity.list.get(pos).NAME);
         new FetchAnswersTask(sharedPreferences.getString("id","123456"),MainActivity.list.get(pos).QUE_ID).execute();
         setUpRec();
+
     }
 
     private void setUpRec() {
+        fab = (FloatingActionButton) findViewById(R.id.FabAnswer);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // call postAnswer
+            }
+        });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewAnswer);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AnswersTimeline.this);
         mRecyclerView.setLayoutManager(layoutManager);
-        mTimelineAdapter = new TimelineAdapter(AnswersTimeline.this);
-        mRecyclerView.setAdapter(mTimelineAdapter);
+        /*mTimelineAdapter = new TimelineAdapter(AnswersTimeline.this);
+        mRecyclerView.setAdapter(mTimelineAdapter);*/
     }
 
     @Override
