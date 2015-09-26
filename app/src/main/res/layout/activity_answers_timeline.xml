@@ -62,4 +62,15 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FabAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@drawable/add"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/QuestionCard"
+        android:layout_alignEnd="@+id/QuestionCard" />
+
 </RelativeLayout>
