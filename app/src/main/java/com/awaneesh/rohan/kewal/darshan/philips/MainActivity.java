@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        list.clear();
+    }
+
     private void setupToolbar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

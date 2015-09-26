@@ -28,6 +28,12 @@ public class AnswersTimeline extends AppCompatActivity {
     public static ArrayList<AnswersData> answersDatas = new ArrayList<>();
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        answersDatas.clear();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers_timeline);
