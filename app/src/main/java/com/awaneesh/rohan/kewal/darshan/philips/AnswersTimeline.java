@@ -31,6 +31,7 @@ public class AnswersTimeline extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers_timeline);
+        mAnswersTimelineAdapter = new AnswerstimelineAdapter(AnswersTimeline.this);
         Intent in = getIntent();
 
         sharedPreferences = getSharedPreferences("Yes", MODE_PRIVATE);

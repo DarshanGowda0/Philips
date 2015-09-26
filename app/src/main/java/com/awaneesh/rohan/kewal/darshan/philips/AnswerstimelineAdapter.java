@@ -53,7 +53,7 @@ public class AnswerstimelineAdapter extends RecyclerView.Adapter<Answerstimeline
         public Holder(View itemView) {
             super(itemView);
             imageView = (CircleImageView) itemView.findViewById(R.id.userImage_answer);
-            userNameTv = (TextView) itemView.findViewById(R.id.userNameAnswer);
+            userNameTv = (TextView) itemView.findViewById(R.id.userName_answer);
             answerTv = (TextView) itemView.findViewById(R.id.answer);
             upvotesTv = (TextView) itemView.findViewById(R.id.upCount);
             downvotes = (TextView) itemView.findViewById(R.id.downCount);
