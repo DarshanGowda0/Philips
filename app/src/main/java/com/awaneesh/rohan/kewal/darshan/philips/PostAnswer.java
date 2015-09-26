@@ -1,5 +1,6 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +25,7 @@ public class PostAnswer extends ActionBarActivity {
     TextView POST;
     int pos;
     String ANSWER,USER_ID="123456",TYPE="DIABETES";
+    static ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

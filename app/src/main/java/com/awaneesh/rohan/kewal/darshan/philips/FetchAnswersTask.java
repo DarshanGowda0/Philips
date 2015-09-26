@@ -120,5 +120,6 @@ public class FetchAnswersTask extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         AnswersTimeline.mAnswersTimelineAdapter.notifyDataSetChanged();
+        AnswersTimeline.progressDialog.dismiss();
     }
 }
