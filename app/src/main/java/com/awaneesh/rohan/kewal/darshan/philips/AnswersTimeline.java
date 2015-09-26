@@ -1,16 +1,19 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -21,14 +24,28 @@ public class AnswersTimeline extends AppCompatActivity {
     CircleImageView image;
     TextView tvName, tvQuestion;
     SharedPreferences sharedPreferences;
-    public static TimelineAdapter mTimelineAdapter;
+    public static AnswerstimelineAdapter mAnswersTimelineAdapter;
     FloatingActionButton fab;
+    public static ArrayList<AnswersData> answersDatas = new ArrayList<>();
+    static ProgressDialog progressDialog;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        answersDatas.clear();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers_timeline);
+        mAnswersTimelineAdapter = new AnswerstimelineAdapter(AnswersTimeline.this);
         Intent in = getIntent();
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("Loading....");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressNumberFormat(null);
+        progressDialog.show();
         sharedPreferences = getSharedPreferences("Yes", MODE_PRIVATE);
 
         image = (CircleImageView) findViewById(R.id.userImageAnswer);
@@ -40,7 +57,7 @@ public class AnswersTimeline extends AppCompatActivity {
 //        image.setImageResource(MainActivity.list.get(pos).IMG);
         tvQuestion.setText(MainActivity.list.get(pos).QUESTION);
         tvName.setText(MainActivity.list.get(pos).NAME);
-        new FetchAnswersTask(sharedPreferences.getString("id","123456"),MainActivity.list.get(pos).QUE_ID).execute();
+        new FetchAnswersTask(sharedPreferences.getString("id", "123456"), MainActivity.list.get(pos).QUE_ID).execute();
         setUpRec();
 
     }
@@ -51,15 +68,16 @@ public class AnswersTimeline extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // call postAnswer
-                Intent in = new Intent(AnswersTimeline.this,PostAnswer.class);
+                Intent in = new Intent(AnswersTimeline.this, PostAnswer.class);
+                in.putExtra("pos", pos);
                 startActivity(in);
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewAnswer);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AnswersTimeline.this);
         mRecyclerView.setLayoutManager(layoutManager);
-        /*mTimelineAdapter = new TimelineAdapter(AnswersTimeline.this);
-        mRecyclerView.setAdapter(mTimelineAdapter);*/
+        mRecyclerView.setAdapter(mAnswersTimelineAdapter);
+
     }
 
     @Override

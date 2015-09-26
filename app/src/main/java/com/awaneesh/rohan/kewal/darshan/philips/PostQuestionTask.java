@@ -1,5 +1,6 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -84,5 +85,19 @@ public class PostQuestionTask extends AsyncTask<Void,Void,Void> {
         return null;
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        PostQuestion.progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        PostQuestion.progressDialog.setMessage("Loading....");
+        PostQuestion.progressDialog.setIndeterminate(true);
+        PostQuestion.progressDialog.setProgressNumberFormat(null);
+        PostQuestion.progressDialog.show();
+    }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        PostQuestion.progressDialog.dismiss();
+    }
 }

@@ -1,6 +1,7 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,15 +15,10 @@ import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +29,9 @@ import java.util.Date;
 import java.util.List;
 
 
-public class PostQuestion extends AppCompatActivity{
+public class PostQuestion extends AppCompatActivity {
 
-//    boolean boldBoolean = false, italicBoolean = false, underlineBoolean = false;
+    //    boolean boldBoolean = false, italicBoolean = false, underlineBoolean = false;
     EditText richEditText;
     FloatingActionButton fab;
     SharedPreferences sharedPreferences;
@@ -43,7 +39,8 @@ public class PostQuestion extends AppCompatActivity{
     private static final int REQUEST_IMAGE_CAPTURE = 0000;
     private static final int SPEECH_REQUEST_CODE = 2222;
     TextView POST;
-    String QUESTION,USER_ID="123456",TYPE="DIABETES";
+    String QUESTION, USER_ID = "123456", TYPE = "DIABETES";
+    static ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +66,7 @@ public class PostQuestion extends AppCompatActivity{
             startActivityForResult(intent, SPEECH_REQUEST_CODE);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(),"This feature is not compitable with your device",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "This feature is not compitable with your device", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -80,22 +77,22 @@ public class PostQuestion extends AppCompatActivity{
         richEditText = (EditText) findViewById(R.id.questionTv);
         fab = (FloatingActionButton) findViewById(R.id.fab2);
         POST = (TextView) findViewById(R.id.postTv);
-        sharedPreferences = getSharedPreferences("Yes",MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Yes", MODE_PRIVATE);
 
-        USER_ID = sharedPreferences.getString("id","ROHAN");
+        USER_ID = sharedPreferences.getString("id", "ROHAN");
 
         POST.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QUESTION = richEditText.getText().toString();
-                new PostQuestionTask(USER_ID,QUESTION,TYPE).execute();
+                new PostQuestionTask(USER_ID, QUESTION, TYPE).execute();
             }
         });
     }
 
 
     private void callCamera() {
-        String[] items = {"Camera","Gallery"};
+        String[] items = {"Camera", "Gallery"};
         new AlertDialog.Builder(PostQuestion.this).setTitle("Select ").setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -122,7 +119,7 @@ public class PostQuestion extends AppCompatActivity{
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.d("Exception",ex.toString());
+                Log.d("Exception", ex.toString());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -164,7 +161,6 @@ public class PostQuestion extends AppCompatActivity{
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
 
-
         }
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
@@ -188,7 +184,7 @@ public class PostQuestion extends AppCompatActivity{
             String spokenText = results.get(0);
             // Do something with spokenText
             String present = Html.toHtml(richEditText.getText());
-            richEditText.setText(Html.fromHtml(present)+spokenText);
+            richEditText.setText(Html.fromHtml(present) + spokenText);
         }
     }
 

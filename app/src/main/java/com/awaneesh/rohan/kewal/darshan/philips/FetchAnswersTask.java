@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -70,7 +74,7 @@ public class FetchAnswersTask extends AsyncTask<Void,Void,Void> {
 
 //                parseJson(Response);
                 Log.d("KEWAL", Response);
-//                parseJSON(Response);
+                parseJSON(Response);
 
             } else {
                 Log.d("darshan", "something wrong");
@@ -88,8 +92,34 @@ public class FetchAnswersTask extends AsyncTask<Void,Void,Void> {
         return null;
     }
 
+    private void parseJSON(String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i=0;i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                AnswersData manswersData = new AnswersData();
+                manswersData.ans_id = jsonObject.getString("ans_id");
+                manswersData.answer = jsonObject.getString("answer");
+                manswersData.user_name = jsonObject.getString("user_name");
+                manswersData.down_bool = jsonObject.getString("down_bool");
+                manswersData.up_bool = jsonObject.getString("up_bool");
+                manswersData.usr_img = jsonObject.getString("user_img");
+                manswersData.voted = jsonObject.getString("voted");
+                manswersData.up_vote = jsonObject.getString("up_vote");
+                manswersData.down_vote = jsonObject.getString("down_vote");
+
+                AnswersTimeline.answersDatas.add(manswersData);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        AnswersTimeline.mAnswersTimelineAdapter.notifyDataSetChanged();
+        AnswersTimeline.progressDialog.dismiss();
     }
 }
