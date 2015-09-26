@@ -42,6 +42,7 @@ public class PostQuestion extends AppCompatActivity {
     String QUESTION, USER_ID = "123456", TYPE = "DIABETES";
     static ProgressDialog progressDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +86,13 @@ public class PostQuestion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 QUESTION = richEditText.getText().toString();
-                new PostQuestionTask(USER_ID, QUESTION, TYPE).execute();
+                progressDialog = new ProgressDialog(PostQuestion.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMessage("Loading....");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgressNumberFormat(null);
+                progressDialog.show();
+                new PostQuestionTask(USER_ID, QUESTION, TYPE,PostQuestion.this).execute();
             }
         });
     }

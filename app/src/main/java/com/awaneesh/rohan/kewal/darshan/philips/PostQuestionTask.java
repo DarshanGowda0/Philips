@@ -1,6 +1,7 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
-import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,16 +19,18 @@ import java.net.URL;
 /**
  * Created by darshan on 26/09/15.
  */
-public class PostQuestionTask extends AsyncTask<Void,Void,Void> {
+public class PostQuestionTask extends AsyncTask<Void, Void, Void> {
 
-    String user_id,question,type;
+    String user_id, question, type;
     BufferedReader mBufferedInputStream;
     String Response = "";
+    Context context;
 
-    public PostQuestionTask(String user_id,String question,String type){
+    public PostQuestionTask(String user_id, String question, String type,Context context) {
         this.user_id = user_id;
         this.question = question;
         this.type = type;
+        this.context = context;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class PostQuestionTask extends AsyncTask<Void,Void,Void> {
 
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("type", type)
-                    .appendQueryParameter("user_id",user_id)
-                    .appendQueryParameter("user_question",question);
+                    .appendQueryParameter("user_id", user_id)
+                    .appendQueryParameter("user_question", question);
 //            Log.d("pageno", "" + page_no);
 
             String query = builder.build().getEncodedQuery();
@@ -69,7 +72,7 @@ public class PostQuestionTask extends AsyncTask<Void,Void,Void> {
                 }
                 mBufferedInputStream.close();
 
-                Log.d("KEWAL",Response);
+                Log.d("KEWAL", Response);
 
             } else {
                 Log.d("darshan", "something wrong");
@@ -85,19 +88,14 @@ public class PostQuestionTask extends AsyncTask<Void,Void,Void> {
         return null;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        PostQuestion.progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        PostQuestion.progressDialog.setMessage("Loading....");
-        PostQuestion.progressDialog.setIndeterminate(true);
-        PostQuestion.progressDialog.setProgressNumberFormat(null);
-        PostQuestion.progressDialog.show();
-    }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         PostQuestion.progressDialog.dismiss();
+        Intent in = new Intent(context,MainActivity.class);
+        context.startActivity(in);
+        MainActivity.list.clear();
+        ((PostQuestion)context).finish();
     }
 }

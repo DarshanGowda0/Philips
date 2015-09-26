@@ -41,6 +41,7 @@ public class AnswersTimeline extends AppCompatActivity {
         setContentView(R.layout.activity_answers_timeline);
         mAnswersTimelineAdapter = new AnswerstimelineAdapter(AnswersTimeline.this);
         Intent in = getIntent();
+        progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMessage("Loading....");
         progressDialog.setIndeterminate(true);

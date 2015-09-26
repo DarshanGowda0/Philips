@@ -64,6 +64,12 @@ public class PostAnswer extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 ANSWER = richEditText1.getText().toString();
+                progressDialog = new ProgressDialog(PostAnswer.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMessage("Loading....");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgressNumberFormat(null);
+                progressDialog.show();
                 new PostAnswerTask(PostAnswer.this,MainActivity.list.get(pos).QUE_ID,ANSWER).execute();
             }
         });

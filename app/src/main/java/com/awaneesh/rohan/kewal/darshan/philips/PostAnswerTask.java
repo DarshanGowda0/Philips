@@ -2,6 +2,7 @@ package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,29 +27,25 @@ public class PostAnswerTask extends AsyncTask<Void,Void,Void> {
     String ans,user_id,que_id;
     BufferedReader mBufferedInputStream;
     String Response = "";
+    Context context;
 
     public PostAnswerTask(Context context,String que_id,String ans){
         sharedPreferences = context.getSharedPreferences("Yes",Context.MODE_PRIVATE);
         this.ans=ans;
+        this.context = context;
         this.que_id=que_id;
         user_id = sharedPreferences.getString("id","123456");
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        PostAnswer.progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        PostAnswer.progressDialog.setMessage("Loading....");
-        PostAnswer.progressDialog.setIndeterminate(true);
-        PostAnswer.progressDialog.setProgressNumberFormat(null);
-        PostAnswer.progressDialog.show();
-
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         PostAnswer.progressDialog.dismiss();
+        Intent in = new Intent(context,MainActivity.class);
+        context.startActivity(in);
+        AnswersTimeline.answersDatas.clear();
+        ((PostAnswer)context).finish();
+
     }
 
     @Override
