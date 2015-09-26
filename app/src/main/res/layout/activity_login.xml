@@ -4,6 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/foggy"
     tools:context="com.awaneesh.rohan.kewal.darshan.philips.Login">
 
 
@@ -12,29 +13,34 @@
         android:layout_height="wrap_content"
         android:id="@+id/Username"
         android:layout_centerVertical="true"
-        android:hint="User Name"
-        android:layout_centerHorizontal="true" />
+        android:hint="Username"
+        android:textColorHint="#ffffff"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/Password"
+        android:textColorHint="#ffffff"
         android:layout_below="@+id/Username"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:hint="Password"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
+        android:layout_height="90dp"
         android:id="@+id/Login"
+        android:padding="10dp"
+        android:background="@drawable/button"
         android:layout_below="@+id/Password"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -44,6 +50,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/status"
         android:layout_above="@+id/Username"
+        android:textColorHint="#ffffff"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="72dp" />
 </RelativeLayout>
