@@ -7,7 +7,13 @@
     android:background="@drawable/foggy"
     tools:context="com.awaneesh.rohan.kewal.darshan.philips.Login">
 
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_alignBottom="@+id/Username"
+       android:layout_centerHorizontal="true"
+        android:layout_marginBottom="43dp" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,5 +66,5 @@
         android:layout_above="@+id/Username"
         android:textColorHint="#ffffff"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="72dp" />
+        android:layout_marginBottom="0dp" />
 </RelativeLayout>
