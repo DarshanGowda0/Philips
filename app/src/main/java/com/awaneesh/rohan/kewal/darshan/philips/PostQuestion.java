@@ -3,6 +3,7 @@ package com.awaneesh.rohan.kewal.darshan.philips;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ public class PostQuestion extends AppCompatActivity{
 //    boolean boldBoolean = false, italicBoolean = false, underlineBoolean = false;
     EditText richEditText;
     FloatingActionButton fab;
+    SharedPreferences sharedPreferences;
     private static final int RESULT_LOAD_IMAGE = 1234;
     private static final int REQUEST_IMAGE_CAPTURE = 0000;
     private static final int SPEECH_REQUEST_CODE = 2222;
@@ -69,6 +71,7 @@ public class PostQuestion extends AppCompatActivity{
             e.printStackTrace();
             Toast.makeText(getApplicationContext(),"This feature is not compitable with your device",Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void init() {
@@ -77,6 +80,10 @@ public class PostQuestion extends AppCompatActivity{
         richEditText = (EditText) findViewById(R.id.questionTv);
         fab = (FloatingActionButton) findViewById(R.id.fab2);
         POST = (TextView) findViewById(R.id.postTv);
+        sharedPreferences = getSharedPreferences("Yes",MODE_PRIVATE);
+
+        USER_ID = sharedPreferences.getString("id","ROHAN");
+
         POST.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

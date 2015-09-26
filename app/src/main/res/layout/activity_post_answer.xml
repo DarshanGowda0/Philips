@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbarQuestion"
             android:layout_margin="5dp"
-            android:hint="Enter the Question"
+            android:hint="Enter the Answer"
             android:imeOptions="flagNoExtractUi">
 
             <requestFocus />

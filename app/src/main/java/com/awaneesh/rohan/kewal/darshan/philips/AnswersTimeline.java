@@ -51,6 +51,8 @@ public class AnswersTimeline extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // call postAnswer
+                Intent in = new Intent(AnswersTimeline.this,PostAnswer.class);
+                startActivity(in);
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewAnswer);
