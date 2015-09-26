@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AnswersTimeline extends AppCompatActivity {
@@ -21,14 +23,16 @@ public class AnswersTimeline extends AppCompatActivity {
     CircleImageView image;
     TextView tvName, tvQuestion;
     SharedPreferences sharedPreferences;
-    public static TimelineAdapter mTimelineAdapter;
+    public static AnswerstimelineAdapter mAnswersTimelineAdapter;
     FloatingActionButton fab;
+    public static ArrayList<AnswersData> answersDatas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers_timeline);
         Intent in = getIntent();
+
         sharedPreferences = getSharedPreferences("Yes", MODE_PRIVATE);
 
         image = (CircleImageView) findViewById(R.id.userImageAnswer);
@@ -52,14 +56,15 @@ public class AnswersTimeline extends AppCompatActivity {
             public void onClick(View v) {
                 // call postAnswer
                 Intent in = new Intent(AnswersTimeline.this,PostAnswer.class);
+                in.putExtra("pos",pos);
                 startActivity(in);
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewAnswer);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AnswersTimeline.this);
         mRecyclerView.setLayoutManager(layoutManager);
-        /*mTimelineAdapter = new TimelineAdapter(AnswersTimeline.this);
-        mRecyclerView.setAdapter(mTimelineAdapter);*/
+        mRecyclerView.setAdapter(mAnswersTimelineAdapter);
+
     }
 
     @Override

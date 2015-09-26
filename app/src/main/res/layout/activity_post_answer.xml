@@ -23,7 +23,7 @@
         android:layout_below="@+id/toolbarQuestion">
 
         <EditText
-            android:id="@+id/questionTv"
+            android:id="@+id/answerTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbarQuestion"

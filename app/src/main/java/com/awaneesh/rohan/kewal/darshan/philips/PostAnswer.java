@@ -18,16 +18,19 @@ import java.util.List;
 
 public class PostAnswer extends ActionBarActivity {
 
-    EditText richEditText;
+    EditText richEditText1;
     FloatingActionButton fab;
     private static final int SPEECH_REQUEST_CODE = 2222;
     TextView POST;
-    String QUESTION,USER_ID="123456",TYPE="DIABETES";
+    int pos;
+    String ANSWER,USER_ID="123456",TYPE="DIABETES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_answer);
+        Intent in = getIntent();
+        pos = in.getIntExtra("pos",0);
         init();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,14 +55,14 @@ public class PostAnswer extends ActionBarActivity {
     }
 
     private void init() {
-        richEditText = (EditText) findViewById(R.id.questionTv);
+        richEditText1 = (EditText) findViewById(R.id.answerTv);
         fab = (FloatingActionButton) findViewById(R.id.fab2);
         POST = (TextView) findViewById(R.id.postTv);
         POST.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QUESTION = richEditText.getText().toString();
-                new PostQuestionTask(USER_ID,QUESTION,TYPE).execute();
+                ANSWER = richEditText1.getText().toString();
+                new PostAnswerTask(PostAnswer.this,MainActivity.list.get(pos).QUE_ID,ANSWER).execute();
             }
         });
     }
@@ -72,8 +75,8 @@ public class PostAnswer extends ActionBarActivity {
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
             // Do something with spokenText
-            String present = Html.toHtml(richEditText.getText());
-            richEditText.setText(Html.fromHtml(present)+spokenText);
+            String present = Html.toHtml(richEditText1.getText());
+            richEditText1.setText(Html.fromHtml(present)+spokenText);
         }
 
     }
