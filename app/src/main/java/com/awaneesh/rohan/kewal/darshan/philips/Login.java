@@ -182,20 +182,26 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 SharedPreferences preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("Check", 1);
+                String pic = null;
+
                 try {
-                    String pic = innerJson.getString("picture");
+                    pic = innerJson.getString("picture");
                     pic = pic.replace("\\", "");
                     editor.putString("picture", pic);
                     editor.putString("name", innerJson.getString("name"));
                     editor.putString("id", innerJson.getString("id"));
+                    editor.putString("type", "diabetes");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 editor.commit();
-                new observe().execute();
-//                Intent intent = new Intent(Login.this,MainActivity.class);
-//                startActivity(intent);
-//                finish();
+
+                try {
+                    new LoginTask(Login.this,innerJson.getString("name"),innerJson.getString("id"),pic,"diabetes").execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 incorrect.setText("Invalid Username or Password");
                 incorrect.setTextColor(Color.RED);
