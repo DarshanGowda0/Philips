@@ -20,7 +20,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
     static ProgressDialog progressDialog;
-    int str[]={R.drawable.md1,R.drawable.md2,R.drawable.md3},i;
+    int str[] = {R.drawable.md1, R.drawable.md2, R.drawable.md3}, i;
+    DisplayImageOptions defaultOptions;
+    ImageLoaderConfiguration config;
+    CircleImageView circleImageView;
 
 
     @Override
@@ -46,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
         new FetchTimelineTask("DIABETES", 0).execute();
-        i = (int)((System.currentTimeMillis()/1000)%3);
+        i = (int) ((System.currentTimeMillis() / 1000) % 3);
         LinearLayout v = (LinearLayout) findViewById(R.id.nav);
         v.setBackgroundResource(str[i]);
-
+        setUpUIL();
         setUpRecyclerView();
 
         setupToolbar();
@@ -63,6 +75,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+    }
+
+    private void setUpUIL() {
+        defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+//                .showImageOnLoading(R.drawable.ic_stub) // resource or drawable
+//                .showImageForEmptyUri(R.drawable.ic_empty) // resource or drawable
+//                .showImageOnFail(R.drawable.ic_error) // resource or drawable
+                .displayer(new SimpleBitmapDisplayer()).build();
+
+        config = new ImageLoaderConfiguration.Builder(
+                MainActivity.this)
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
+        circleImageView= (CircleImageView) findViewById(R.id.circleView);
+
+        ImageLoader.getInstance().displayImage(getSharedPreferences("Yes",MODE_PRIVATE).getString("picture",""),circleImageView,defaultOptions);
 
     }
 
@@ -146,27 +180,25 @@ public class MainActivity extends AppCompatActivity {
     void checkWeight() {
         double min = 63.58, max = 57.22, avg = 0, calorie = 0;
 
-        Log.d("Kewal",""+Login.weightValue.size()+" "+Login.weightValue);
+        Log.d("Kewal", "" + Login.weightValue.size() + " " + Login.weightValue);
         for (int i = 0; i < Login.weightValue.size(); i++) {
             if ((i % 2) != 0) {
-                Log.d("Kewal","no i="+i+": "+Double.parseDouble(Login.weightValue.get(i)));
+                Log.d("Kewal", "no i=" + i + ": " + Double.parseDouble(Login.weightValue.get(i)));
                 continue;
             } else {
                 avg += Double.parseDouble(Login.weightValue.get(i));
-                Log.d("Kewal","yes i="+i+": "+Double.parseDouble(Login.weightValue.get(i)));
+                Log.d("Kewal", "yes i=" + i + ": " + Double.parseDouble(Login.weightValue.get(i)));
             }
         }
-        avg = avg / (Login.weightValue.size()/2);
-        Log.d("weight",""+avg);
-        calorie = 655 + (19.6*avg) + (1.8*170) - (4.7 * 20);
-        if (avg >= min && avg <= max ){
-            Toast.makeText(this,"Healthy!! Can consume upto "+calorie+" calories",Toast.LENGTH_LONG).show();
-        }
-        else if (avg > max ){
-            Toast.makeText(this,"Overweight!! Gotta reduce.. Should consume atmax "+(calorie-400)+" calories",Toast.LENGTH_LONG).show();
-        }
-        else
-            Toast.makeText(this,"Underweight!! Gotta Increase..Can consume upto "+calorie+" calories",Toast.LENGTH_LONG).show();
+        avg = avg / (Login.weightValue.size() / 2);
+        Log.d("weight", "" + avg);
+        calorie = 655 + (19.6 * avg) + (1.8 * 170) - (4.7 * 20);
+        if (avg >= min && avg <= max) {
+            Toast.makeText(this, "Healthy!! Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
+        } else if (avg > max) {
+            Toast.makeText(this, "Overweight!! Gotta reduce.. Should consume atmax " + (calorie - 400) + " calories", Toast.LENGTH_LONG).show();
+        } else
+            Toast.makeText(this, "Underweight!! Gotta Increase..Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
     }
 
     @Override
