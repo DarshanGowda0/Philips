@@ -56,6 +56,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     }
 
 
+
+
+
+
     @Override
     public void onClick(View v) {
         if (pwd.getText().toString().equals("") || userName.getText().toString().equals("")) {
