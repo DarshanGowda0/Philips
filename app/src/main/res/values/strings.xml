@@ -7,5 +7,6 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_splash">Splash</string>
     <string name="title_activity_answers_timeline">AnswersTimeline</string>
+    <string name="title_activity_post_answer">PostAnswer</string>
 
 </resources>

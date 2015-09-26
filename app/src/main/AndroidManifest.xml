@@ -34,6 +34,10 @@
             android:name=".AnswersTimeline"
             android:label="@string/title_activity_answers_timeline" >
         </activity>
+        <activity
+            android:name=".PostAnswer"
+            android:label="@string/title_activity_post_answer" >
+        </activity>
     </application>
 
 </manifest>
