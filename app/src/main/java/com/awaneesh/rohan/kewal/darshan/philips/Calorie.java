@@ -41,14 +41,15 @@ public class Calorie extends ActionBarActivity {
         avg = avg / (data.size() / 2);
         Log.d("weight", "" + avg);
         calorie = 655 + (19.6 * avg) + (1.8 * 170) - (4.7 * 20);
+        int a=(int)calorie;
         if (avg >= min && avg <= max) {
-            Toast.makeText(this, "Healthy!! Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
-            TV.setText( calorie + "");
+            Toast.makeText(this, "Healthy!! Can consume upto " + a + " calories", Toast.LENGTH_LONG).show();
+            TV.setText( a + "");
         } else if (avg > max) {
-            Toast.makeText(this, "Overweight!! Gotta reduce.. Should consume atmax " + (calorie - 400) + " calories", Toast.LENGTH_LONG).show();
-            TV.setText("" + (calorie - 400) );
+            Toast.makeText(this, "Overweight!! Gotta reduce.. Should consume at max " + (a - 400) + " calories", Toast.LENGTH_LONG).show();
+            TV.setText("" + (a - 400) );
         } else {
-            Toast.makeText(this, "Underweight!! Gotta Increase..Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Underweight!! Gotta Increase..Can consume upto " + a + " calories", Toast.LENGTH_LONG).show();
             TV.setText(""+ calorie );
         }
     }

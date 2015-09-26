@@ -1,8 +1,8 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -26,13 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
     DisplayImageOptions defaultOptions;
     ImageLoaderConfiguration config;
     CircleImageView circleImageView;
-
+String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+SharedPreferences sharedPreferences=getSharedPreferences("Yes",MODE_PRIVATE);
+        username=sharedPreferences.getString("name","kewal");
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMessage("Loading....");
@@ -103,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         ImageLoader.getInstance().displayImage(getSharedPreferences("Yes", MODE_PRIVATE).getString("picture", ""), circleImageView, defaultOptions);
 
+        TextView user = (TextView) findViewById(R.id.myName);
+        user.setText(username);
     }
 
     @Override

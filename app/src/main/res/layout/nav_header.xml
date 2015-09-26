@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="Username"
+        android:id="@+id/myName"
         android:textSize="20sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
