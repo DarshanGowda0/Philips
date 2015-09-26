@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
     void checkWeight(){
+        //might not use
         /*String weight;
         try {
             weight=Login.details.getString("weight");
