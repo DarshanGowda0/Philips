@@ -1,13 +1,14 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,10 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
-
-import com.malinskiy.superrecyclerview.OnMoreListener;
-import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
-    int str[]={R.drawable.md1,R.drawable.md2,R.drawable.md3},i;
-
+    static ProgressDialog progressDialog;
 
 
 
@@ -39,10 +36,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new FetchTimelineTask("DIABETES",0).execute();
-        i= (int)((System.currentTimeMillis()/1000)%3);
-        LinearLayout v= (LinearLayout) findViewById(R.id.nav);
-        v.setBackgroundResource(str[i]);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("Loading....");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressNumberFormat(null);
+        progressDialog.show();
+
+        new FetchTimelineTask("DIABETES", 0).execute();
 
         setUpRecyclerView();
 
@@ -123,9 +125,38 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
+                        if (menuItem.getItemId() == R.id.nav_weight) {
+                            checkWeight();
+                        }
                         return true;
                     }
                 });
+    }
+
+    void checkWeight() {
+        double min = 63.58, max = 57.22, avg = 0, calorie = 0;
+
+        Log.d("Kewal",""+Login.weightValue.size()+" "+Login.weightValue);
+        for (int i = 0; i < Login.weightValue.size(); i++) {
+            if ((i % 2) != 0) {
+                Log.d("Kewal","no i="+i+": "+Double.parseDouble(Login.weightValue.get(i)));
+                continue;
+            } else {
+                avg += Double.parseDouble(Login.weightValue.get(i));
+                Log.d("Kewal","yes i="+i+": "+Double.parseDouble(Login.weightValue.get(i)));
+            }
+        }
+        avg = avg / (Login.weightValue.size()/2);
+        Log.d("weight",""+avg);
+        calorie = 655 + (19.6*avg) + (1.8*170) - (4.7 * 20);
+        if (avg >= min && avg <= max ){
+            Toast.makeText(this,"Healthy!! Can consume upto "+calorie+" calories",Toast.LENGTH_LONG).show();
+        }
+        else if (avg > max ){
+            Toast.makeText(this,"Overweight!! Gotta reduce.. Should consume atmax "+(calorie-400)+" calories",Toast.LENGTH_LONG).show();
+        }
+        else
+            Toast.makeText(this,"Underweight!! Gotta Increase..Can consume upto "+calorie+" calories",Toast.LENGTH_LONG).show();
     }
 
     @Override

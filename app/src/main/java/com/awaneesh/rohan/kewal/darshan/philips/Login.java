@@ -1,5 +1,6 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -39,8 +40,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     int status;
     public static JSONObject innerJson, Observation;
     String username, password;
-    ArrayList<String> weightValue = new ArrayList<>();
-
+    String pic = null;
+    public static ArrayList<String> weightValue = new ArrayList<>();
+    static ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,17 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     }
 
     public class verify extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(Login.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMessage("Loading....");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setProgressNumberFormat(null);
+            progressDialog.show();
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -182,7 +195,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 SharedPreferences preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("Check", 1);
-                String pic = null;
 
                 try {
                     pic = innerJson.getString("picture");
@@ -196,11 +208,11 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 }
                 editor.commit();
 
-                try {
-                    new LoginTask(Login.this,innerJson.getString("name"),innerJson.getString("id"),pic,"diabetes").execute();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+                    new observe().execute();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
             } else {
                 incorrect.setText("Invalid Username or Password");
@@ -263,6 +275,17 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
             }
             return null;
             // testing puash
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                new LoginTask(Login.this,innerJson.getString("name"),innerJson.getString("id"),pic,"diabetes").execute();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

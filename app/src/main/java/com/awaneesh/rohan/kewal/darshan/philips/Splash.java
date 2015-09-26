@@ -20,7 +20,7 @@ public class Splash extends ActionBarActivity {
 
         SharedPreferences preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
         check = preferences.getInt("Check", 0);
-        new CountDownTimer(3500, 1000) {
+        new CountDownTimer(1500, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
