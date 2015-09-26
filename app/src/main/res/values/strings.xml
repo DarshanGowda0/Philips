@@ -8,5 +8,6 @@
     <string name="title_activity_splash">Splash</string>
     <string name="title_activity_answers_timeline">AnswersTimeline</string>
     <string name="title_activity_post_answer">PostAnswer</string>
+    <string name="title_activity_calorie">Calorie</string>
 
 </resources>

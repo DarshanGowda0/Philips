@@ -38,6 +38,10 @@
             android:name=".PostAnswer"
             android:label="@string/title_activity_post_answer" >
         </activity>
+        <activity
+            android:name=".Calorie"
+            android:label="@string/title_activity_calorie" >
+        </activity>
     </application>
 
 </manifest>
