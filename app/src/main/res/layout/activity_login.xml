@@ -12,35 +12,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Username"
-        android:layout_centerVertical="true"
-        android:hint="Username"
-        android:textColorHint="#ffffff"
+        android:layout_marginTop="200dp"
+        android:hint="       Username"
+        android:textColorHint="#bc5b5b5b"
+        android:textColor="#000000"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/transparent"/>
+        android:background="@drawable/edittext"
+        />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:id="@+id/Password"
-        android:textColorHint="#ffffff"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColorHint="#bc5b5b5b"
+        android:textColor="#000000"
         android:layout_below="@+id/Username"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:hint="Password"
+        android:layout_marginTop="10dp"
+        android:hint="   Password"
         android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"/>
+        android:background="@drawable/edittext1"/>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
         android:id="@+id/Login"
         android:padding="10dp"
         android:background="@drawable/button"
         android:layout_below="@+id/Password"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
