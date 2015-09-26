@@ -16,9 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -116,9 +119,31 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
+                    Log.d("Darshanrohantesting",""+menuItem.getItemId());
+                        if (menuItem.getItemId() == R.id.nav_weight){
+                            checkWeight();
+                        }
                         return true;
                     }
                 });
+    }
+    void checkWeight(){
+        /*String weight;
+        try {
+            weight=Login.details.getString("weight");
+            double min = 57.22,max = 63.58;
+            if (Double.parseDouble(weight) >= min && Double.parseDouble(weight) <= max){
+                Toast.makeText(MainActivity.this,"Healthy Weight",Toast.LENGTH_SHORT).show();
+            }
+            else if (Double.parseDouble(weight) > max){
+                Toast.makeText(MainActivity.this,"OVERWEIGHT!! LOSE SOME WEIGHT",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(MainActivity.this,"UNDERWEIGHT!! GAIN SOME WEIGHT",Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override
@@ -131,25 +156,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

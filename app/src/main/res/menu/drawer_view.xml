@@ -19,6 +19,10 @@
             android:id="@+id/nav_discussion"
             android:icon="@drawable/link"
             android:title="Discussion" />
+        <item
+            android:id="@+id/nav_weight"
+            android:icon="@drawable/link"
+            android:title="Weight" />
     </group>
 
     <item android:title="Others">

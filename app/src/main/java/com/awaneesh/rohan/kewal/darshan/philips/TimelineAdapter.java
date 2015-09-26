@@ -31,7 +31,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder
     public void onBindViewHolder(Holder holder, int position) {
         holder.questionTv.setText(MainActivity.list.get(position).QUESTION);
         holder.nameTv.setText(MainActivity.list.get(position).NAME);
-        holder.imageView.setImageResource(R.drawable.user);
+
         //set random images
 
 
@@ -39,17 +39,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder
 
     @Override
     public int getItemCount() {
-        return MainActivity.list.size();
+        return 0;
     }
 
     public class Holder extends RecyclerView.ViewHolder {
 
-                CircleImageView imageView;
+//        CircleImageView imageView;
         TextView nameTv, questionTv;
 
         public Holder(View itemView) {
             super(itemView);
-            imageView = (CircleImageView) itemView.findViewById(R.id.userImage);
+//            imageView = (CircleImageView) itemView.findViewById(R.id.userImage);
             nameTv = (TextView) itemView.findViewById(R.id.userName);
             questionTv = (TextView) itemView.findViewById(R.id.question);
         }
