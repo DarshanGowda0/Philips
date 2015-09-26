@@ -1,6 +1,7 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -20,10 +21,18 @@ import android.widget.Toast;
 
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -39,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new FetchTimelineTask("DIABETES",0).execute();
-
+        sharedPreferences = getSharedPreferences("Yes", MODE_PRIVATE);
         setUpRecyclerView();
 
         setupToolbar();
@@ -113,6 +123,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        CircleImageView img = (CircleImageView) findViewById(R.id.circleView);
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+//                .showImageOnLoading(R.drawable.ic_stub) // resource or drawable
+//                .showImageForEmptyUri(R.drawable.ic_empty) // resource or drawable
+//                .showImageOnFail(R.drawable.ic_error) // resource or drawable
+                .displayer(new SimpleBitmapDisplayer()).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+        ImageLoader.getInstance().init(config);
+        ImageLoader.getInstance().displayImage(sharedPreferences.getString("picture",
+                "http://www.digitalsignage.net/wp-content/uploads/2013/07/android7.jpg"), img, defaultOptions);
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
