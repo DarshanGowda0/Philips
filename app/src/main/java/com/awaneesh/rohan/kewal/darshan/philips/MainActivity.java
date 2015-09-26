@@ -1,6 +1,7 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,13 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,7 +26,13 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -94,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 .discCacheSize(100 * 1024 * 1024).build();
 
         ImageLoader.getInstance().init(config);
-        circleImageView= (CircleImageView) findViewById(R.id.circleView);
+        circleImageView = (CircleImageView) findViewById(R.id.circleView);
 
-        ImageLoader.getInstance().displayImage(getSharedPreferences("Yes",MODE_PRIVATE).getString("picture",""),circleImageView,defaultOptions);
+        ImageLoader.getInstance().displayImage(getSharedPreferences("Yes", MODE_PRIVATE).getString("picture", ""), circleImageView, defaultOptions);
 
     }
 
@@ -178,27 +183,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void checkWeight() {
-        double min = 63.58, max = 57.22, avg = 0, calorie = 0;
-
-        Log.d("Kewal", "" + Login.weightValue.size() + " " + Login.weightValue);
-        for (int i = 0; i < Login.weightValue.size(); i++) {
-            if ((i % 2) != 0) {
-                Log.d("Kewal", "no i=" + i + ": " + Double.parseDouble(Login.weightValue.get(i)));
-                continue;
-            } else {
-                avg += Double.parseDouble(Login.weightValue.get(i));
-                Log.d("Kewal", "yes i=" + i + ": " + Double.parseDouble(Login.weightValue.get(i)));
-            }
-        }
-        avg = avg / (Login.weightValue.size() / 2);
-        Log.d("weight", "" + avg);
-        calorie = 655 + (19.6 * avg) + (1.8 * 170) - (4.7 * 20);
-        if (avg >= min && avg <= max) {
-            Toast.makeText(this, "Healthy!! Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
-        } else if (avg > max) {
-            Toast.makeText(this, "Overweight!! Gotta reduce.. Should consume atmax " + (calorie - 400) + " calories", Toast.LENGTH_LONG).show();
-        } else
-            Toast.makeText(this, "Underweight!! Gotta Increase..Can consume upto " + calorie + " calories", Toast.LENGTH_LONG).show();
+        Intent in = new Intent(this, Calorie.class);
+        startActivity(in);
+        finish();
     }
 
     @Override
@@ -232,4 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

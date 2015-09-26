@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 
 public class Login extends ActionBarActivity implements View.OnClickListener {
 
+    public static   String FILENAME = "KEWAL";
     EditText userName, pwd;
     Button login;
     TextView incorrect;
@@ -43,6 +46,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     String pic = null;
     public static ArrayList<String> weightValue = new ArrayList<>();
     static ProgressDialog progressDialog;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,8 +203,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (status == 200) {
-                SharedPreferences preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
+                preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
+                editor = preferences.edit();
                 editor.putInt("Check", 1);
 
                 try {
@@ -285,6 +292,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
+                writeTo(weightValue.toString());
                 new LoginTask(Login.this,innerJson.getString("name"),innerJson.getString("id"),pic,"diabetes").execute();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -292,5 +300,16 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
         }
     }
-
+    void writeTo(String str){
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE);
+            fos.write(str.getBytes());
+            fos.close();
+            Log.d("CALORIE","written to "+FILENAME+" successfully");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
