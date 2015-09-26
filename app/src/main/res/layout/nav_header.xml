@@ -14,14 +14,14 @@
         android:layout_height="90dp"
         android:layout_margin="8dp"
         app:border_width="2dp"
-        app:border_color="#e67e22"
+        app:border_color="#009486"
         android:src="@drawable/user"
         android:id="@+id/circleView" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         android:text="Username"
         android:textSize="20sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
