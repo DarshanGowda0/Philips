@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
     static ProgressDialog progressDialog;
-    int str[] = {R.drawable.md1, R.drawable.md2, R.drawable.md3}, i;
+   // int str[] = {R.drawable.md1, R.drawable.md2, R.drawable.md3}, i;
     DisplayImageOptions defaultOptions;
     ImageLoaderConfiguration config;
     CircleImageView circleImageView;
@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
         new FetchTimelineTask("DIABETES", 0).execute();
-        i = (int) ((System.currentTimeMillis() / 1000) % 3);
+      //  i = (int) ((System.currentTimeMillis() / 1000) % 3);
         LinearLayout v = (LinearLayout) findViewById(R.id.nav);
-        v.setBackgroundResource(str[i]);
+        v.setBackgroundResource(R.drawable.md3);
         setUpUIL();
         setUpRecyclerView();
 
