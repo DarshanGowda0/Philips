@@ -96,6 +96,7 @@ public class FetchTimelineTask extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
 
         MainActivity.mTimelineAdapter.notifyDataSetChanged();
+        MainActivity.progressDialog.dismiss();
     }
 
     private void parseJSON(String response) {

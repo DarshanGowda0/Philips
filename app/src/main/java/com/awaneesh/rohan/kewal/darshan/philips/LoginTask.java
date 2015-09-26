@@ -98,9 +98,10 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
+        Login.progressDialog.dismiss();
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
-//        context.finish();
+        ((Login)context).finish();
 
     }
 }
