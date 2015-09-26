@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     public static TimelineAdapter mTimelineAdapter;
     static ProgressDialog progressDialog;
-
+    int str[]={R.drawable.md1,R.drawable.md2,R.drawable.md3},i;
 
 
     @Override
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
         new FetchTimelineTask("DIABETES", 0).execute();
+        i = (int)((System.currentTimeMillis()/1000)%3);
+        LinearLayout v = (LinearLayout) findViewById(R.id.nav);
+        v.setBackgroundResource(str[i]);
 
         setUpRecyclerView();
 
