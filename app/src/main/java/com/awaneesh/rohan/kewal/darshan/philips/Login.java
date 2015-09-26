@@ -1,7 +1,6 @@
 package com.awaneesh.rohan.kewal.darshan.philips;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,10 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class Login extends ActionBarActivity implements View.OnClickListener {
@@ -35,8 +37,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     TextView incorrect;
     String access_token;
     int status;
-    JSONObject details;
-    String username,password;
+    public static JSONObject innerJson, Observation;
+    String username, password;
+    ArrayList<String> weightValue = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +56,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (pwd.getText().toString().equals("")||userName.getText().toString().equals("")){
+        if (pwd.getText().toString().equals("") || userName.getText().toString().equals("")) {
             incorrect.setText("Enter both username and password");
 
-        }
-        else {
+        } else {
             username = userName.getText().toString();
             password = pwd.getText().toString();
             new verify().execute();
@@ -110,21 +112,21 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 urlConnection.setReadTimeout(10000);
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestProperty("Authorization", "Bearer "+access_token);
+                urlConnection.setRequestProperty("Authorization", "Bearer " + access_token);
                 urlConnection.setRequestProperty("Content-Type", "application/json");
 
                 JSONObject person = new JSONObject();
                 try {
-                    person.put("password",password);
-                    person.put("username",username);
+                    person.put("password", password);
+                    person.put("username", username);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream(),"UTF-8");
+                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8");
                 wr.write(person.toString());
                 wr.close();
-                Log.d("DarshanRohanTesting",person.toString());
+                Log.d("DarshanRohanTesting", person.toString());
 
                 urlConnection.connect();
 
@@ -151,7 +153,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                         output.append(s);
                     String result = output.toString();
                     Log.d("DarshanRohanTesting", result);
-                    details = new JSONObject(result);
+                    JSONObject details = new JSONObject(result);
+                    innerJson = new JSONObject(details.getString("user"));
+
                 }
                 //return null;
             } catch (MalformedURLException e) {
@@ -163,32 +167,96 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
             return null;
         }
+
+
+
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (status==200){
+            if (status == 200) {
                 SharedPreferences preferences = getSharedPreferences("Yes", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("Check", 1);
                 try {
-                    editor.putString("picture",details.getString("picture"));
-                    editor.putString("name",details.getString("name"));
-                    editor.putString("id",details.getString("id"));
+                    String pic = innerJson.getString("picture");
+                    pic = pic.replace("\\", "");
+                    editor.putString("picture", pic);
+                    editor.putString("name", innerJson.getString("name"));
+                    editor.putString("id", innerJson.getString("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 editor.commit();
-                Intent intent = new Intent(Login.this,MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else{
+                new observe().execute();
+//                Intent intent = new Intent(Login.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+            } else {
                 incorrect.setText("Invalid Username or Password");
                 incorrect.setTextColor(Color.RED);
             }
+        }
+    }
+
+    public class observe extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                StringBuffer output = new StringBuffer("");
+                URL url = new URL("https://gateway.api.pcftest.com:9004/v1/fhir_rest/Observation?subject._id=a101");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setReadTimeout(10000);
+//                urlConnection.setDoInput(true);
+//                urlConnection.setDoOutput(true);
+                urlConnection.setRequestProperty("Authorization", "Bearer " + access_token);
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.connect();
+
+
+                int status1 = urlConnection.getResponseCode();
+                Log.d("DarshanRohanTesting", "observation" + status1);
+
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                Log.d("Testing ob error", in.toString());
+                BufferedReader buffer = new BufferedReader(
+                        new InputStreamReader(in));
+                String s = "";
+                while ((s = buffer.readLine()) != null)
+                    output.append(s);
+                String result = output.toString();
+                Log.d("DarshanRohanTesting", result);
+                JSONObject Obs = new JSONObject(result);
+                JSONArray entry = new JSONArray(Obs.getString("entry"));
+                for (int i = 0; i < entry.length(); i++) {
+                    JSONObject inner = new JSONObject(String.valueOf(entry.getJSONObject(i)));
+                    JSONObject content = new JSONObject(inner.getString("content"));
+//                    JSONObject name = new JSONObject(content.getString("name"));
+                    JSONObject valueQty = new JSONObject(content.getString("valueQuantity"));
+                    weightValue.add(valueQty.getString("value"));
+                    Log.d("testing", weightValue.get(i));
+                }
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            } catch (ProtocolException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return null;
+            // testing puash
         }
     }
 
